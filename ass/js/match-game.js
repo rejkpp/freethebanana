@@ -17,7 +17,7 @@ $(document).ready(function() {
  MatchGame.generateCardValues = function () {
    var numberPairs = [];
 
-   for (var c = 1 ; c <=6 ; c++ ) {
+   for (var c = 1 ; c <=60 ; c++ ) {
      numberPairs.push(c,c);
    }
 
