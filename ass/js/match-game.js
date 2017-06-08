@@ -17,7 +17,7 @@ $(document).ready(function() {
  MatchGame.generateCardValues = function () {
    var numberPairs = [];
 
-   for (var c = 1 ; c <=6 ; c++ ) {
+   for (var c = 1 ; c <=8 ; c++ ) {
      numberPairs.push(c,c);
    }
 
@@ -40,7 +40,10 @@ MatchGame.renderCards = function(numbers, $id)
 {
   $id.empty();
   $id.data('currentlyFlipped',[])
-  var colorValues=[
+  var colors;
+  var colorValues;
+  colors=[];
+  colorValues=[
     'hsl(25,85%,65%)',
     'hsl(55,85%,65%)',
     'hsl(90,85%,65%)',
@@ -49,15 +52,22 @@ MatchGame.renderCards = function(numbers, $id)
     'hsl(265,85%,65%)',
     'hsl(310,85%,65%)',
     'hsl(360,85%,65%)'];
+  for(var c = 0 ; c< numbers.length/2;c++)
+      {
+        colors.push(colorValues[c%colorValues.length]);
+      }
 
   for ( var n = 0 ; n < numbers.length ; n++ )
   {
-      var $newCard=$('<div class="col-xs-4 card"></div>');
-      $newCard.data('value',numbers[n]);
-      $newCard.data('flipped',false);
-      $newCard.data('color',colorValues[numbers[n]-1]);
-      $id.append($newCard);
+
+    var $newCard;
+    $newCard=$('<div class="col-xs-4 card"></div>');
+    $newCard.data('value',numbers[n]);
+    $newCard.data('flipped',false);
+    $newCard.data('color',colors[numbers[n]-1]);
+    $id.append($newCard);
   }
+  console.log(colors);
   $('.card').on('click', function()
   {
     MatchGame.flipCard($(this),$id);
@@ -76,19 +86,23 @@ MatchGame.flipCard = function($some, $id2)
       return;
   }
   $some.css('background',$some.data('color')).text($some.data('value')).data('flipped',true);
-  $id2.data('currentlyFlipped').push($some);
+  var opencards;
+  var match;
+  var close;
+  match={background:'rgb(153,153,153)'};
+  close={background:'rgb(32,64,86)'};
+  opencards = $id2.data('currentlyFlipped'); //sets var to array that holds open cards
+  opencards.push($some);
 
-  if($id2.data('currentlyFlipped').length===2) {
-    if($id2.data('currentlyFlipped')[0].data('value')===$id2.data('currentlyFlipped')[1].data('value')){
-      $id2.data('currentlyFlipped')[0].css('background','rgb(153,153,153)');
-      $id2.data('currentlyFlipped')[1].css('background','rgb(153,153,153)');
+  if(opencards.length===2) {
+    if(opencards[0].data('value')===opencards[1].data('value')){
+      opencards[0].css(match);
+      opencards[1].css(match);
     }
     else{
-      var one = $id2.data('currentlyFlipped')[0];
-      var two = $id2.data('currentlyFlipped')[1];
       setTimeout(function(){
-      one.css('background','rgb(32,64,86)').text('').data('flipped',false);
-      two.css('background','rgb(32,64,86)').text('').data('flipped',false);
+      opencards[0].css(close).text('').data('flipped',false);
+      opencards[1].css(close).text('').data('flipped',false);
     },500);
     }
     $id2.data('currentlyFlipped',[]);
