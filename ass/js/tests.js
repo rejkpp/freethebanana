@@ -24,8 +24,8 @@ MatchGameTests.testGenerateCardValues = function(errors) {
     return;
   }
 
-  if (values.length !== 16) {
-    errors.push("generateCardValues: should return an array containing 16 values.");
+  if (values.length !== 12) {
+    errors.push("generateCardValues: should return an array containing 12 values.");
   }
 
   // Get number of each value.
@@ -35,9 +35,9 @@ MatchGameTests.testGenerateCardValues = function(errors) {
     valueCounts[value] = valueCount ? valueCount + 1 : 1;
   });
 
-  for (var i = 1; i <= 8; i++) {
+  for (var i = 1; i <= 6; i++) {
     if (valueCounts[i] !== 2) {
-      errors.push("generateCardValues: should return an array containing two copies of each card, values 1 through 8.");
+      errors.push("generateCardValues: should return an array containing two copies of each card, values 1 through 6.");
     }
   }
 };
