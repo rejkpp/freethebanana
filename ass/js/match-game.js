@@ -7,7 +7,14 @@ var MatchGame = {};
 
 $(document).ready(function() {
   var $game=$('#game');
-  MatchGame.renderCards(MatchGame.generateCardValues(), $game );
+  var render=MatchGame.generateCardValues();
+  MatchGame.renderCards(render, $game );
+  console.log(render);
+  $('.reset').on('click', function(){
+    var renderNew=MatchGame.generateCardValues();
+    MatchGame.renderCards(renderNew, $game);
+  console.log(renderNew);
+  });
 });
 
 /*
@@ -39,8 +46,7 @@ $(document).ready(function() {
 MatchGame.renderCards = function(numbers, $id)
 {
   $id.empty();
-  $id.data('currentlyFlipped',[])
-  var colors;
+   var colors;
   var colorValues;
   colors=[];
   colorValues=[
@@ -67,7 +73,8 @@ MatchGame.renderCards = function(numbers, $id)
     $newCard.data('color',colors[numbers[n]-1]);
     $id.append($newCard);
   }
-  console.log(colors);
+//  console.log(colors);
+  $id.data('currentlyFlipped',[])
   $('.card').on('click', function()
   {
     MatchGame.flipCard($(this),$id);
