@@ -5,6 +5,10 @@ var MatchGame = {};
   Renders a 4x4 board of cards.
 */
 
+$(document).ready(function() {
+  MatchGame.renderCards(MatchGame.generateCardValues(), $('#game'));
+});
+
 /*
   Generates and returns an array of matching card values.
  */
@@ -31,9 +35,29 @@ var MatchGame = {};
   object.
 */
 
-MatchGame.renderCards = function(cardValues, $game) {
+MatchGame.renderCards = function(numbers, $id)
+{
+  $id.empty();
+  var colorValues=[
+    'hsl(25,85%,65%)',
+    'hsl(55,85%,65%)',
+    'hsl(90,85%,65%)',
+    'hsl(160,85%,65%)',
+    'hsl(220,85%,65%)',
+    'hsl(265,85%,65%)',
+    'hsl(310,85%,65%)',
+    'hsl(360,85%,65%)'];
 
+  for ( var n = 0 ; n < numbers.length ; n++ )
+  {
+      var $newCard=$('<div class="col-xs-3 card"></div>');
+      $newCard.data('value',numbers[n]);
+      $newCard.data('flipped',false);
+      $newCard.data('color',colorValues[numbers[n]-1]);
+      $id.append($newCard);
+  }
 };
+
 
 /*
   Flips over a given card and checks to see if two cards are flipped over.
