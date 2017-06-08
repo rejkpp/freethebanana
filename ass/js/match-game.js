@@ -6,7 +6,8 @@ var MatchGame = {};
 */
 
 $(document).ready(function() {
-  MatchGame.renderCards(MatchGame.generateCardValues(), $('#game'));
+  var $game=$('#game');
+  MatchGame.renderCards(MatchGame.generateCardValues(), $game );
 });
 
 /*
@@ -38,6 +39,7 @@ $(document).ready(function() {
 MatchGame.renderCards = function(numbers, $id)
 {
   $id.empty();
+  $id.data('currentlyFlipped',[])
   var colorValues=[
     'hsl(25,85%,65%)',
     'hsl(55,85%,65%)',
@@ -56,14 +58,40 @@ MatchGame.renderCards = function(numbers, $id)
       $newCard.data('color',colorValues[numbers[n]-1]);
       $id.append($newCard);
   }
+  $('.card').on('click', function()
+  {
+    MatchGame.flipCard($(this),$id);
+  });
 };
-
 
 /*
   Flips over a given card and checks to see if two cards are flipped over.
   Updates styles on flipped cards depending whether they are a match or not.
  */
 
-MatchGame.flipCard = function($card, $game) {
+MatchGame.flipCard = function($some, $id2)
+{
+  if($some.data('flipped'))
+  {
+      return;
+  }
+  $some.css('background',$some.data('color')).text($some.data('value')).data('flipped',true);
+  $id2.data('currentlyFlipped').push($some);
+
+  if($id2.data('currentlyFlipped').length===2) {
+    if($id2.data('currentlyFlipped')[0].data('value')===$id2.data('currentlyFlipped')[1].data('value')){
+      $id2.data('currentlyFlipped')[0].css('background','rgb(153,153,153)');
+      $id2.data('currentlyFlipped')[1].css('background','rgb(153,153,153)');
+    }
+    else{
+      var one = $id2.data('currentlyFlipped')[0];
+      var two = $id2.data('currentlyFlipped')[1];
+      setTimeout(function(){
+      one.css('background','rgb(32,64,86)').text('').data('flipped',false);
+      two.css('background','rgb(32,64,86)').text('').data('flipped',false);
+    },500);
+    }
+    $id2.data('currentlyFlipped',[]);
+  }
 
 };
