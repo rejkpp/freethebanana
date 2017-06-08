@@ -52,7 +52,7 @@ MatchGame.renderCards = function(numbers, $id)
 
   for ( var n = 0 ; n < numbers.length ; n++ )
   {
-      var $newCard=$('<div class="col-xs-6 card"></div>');
+      var $newCard=$('<div class="col-xs-4 card"></div>');
       $newCard.data('value',numbers[n]);
       $newCard.data('flipped',false);
       $newCard.data('color',colorValues[numbers[n]-1]);
