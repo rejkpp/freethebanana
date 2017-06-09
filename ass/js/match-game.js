@@ -144,7 +144,7 @@ MatchGame.flipCard = function($some, $id2,numbers)
       setTimeout(function(){
       opencards[0].css(closed).text('').data('flipped',false);
       opencards[1].css(closed).text('').data('flipped',false);
-    },500);
+    },750);
     }
     $id2.data('currentlyFlipped',[]);
   }
