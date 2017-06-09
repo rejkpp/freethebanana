@@ -68,16 +68,28 @@ p{
 .gif{
   background: url("../img/congrats.gif");
   background-repeat: no-repeat;
-  padding-top: 45%;
+  height: 30%;
+  margin-top: 2rem;
   background-position: center;
   background-size: contain;
+  width: 100%;
 }
-@media only screen and (min-width:30rem){
+@media only screen and (min-width:40rem){
   .card::before{
     display: inline;
     content: '';
-    padding-top:45%;
-    padding-bottom:45%;
+    padding-top:40%;
+    padding-bottom:40%;
     font-weight: 400;
   }
+  .win{
+    align-items: center;
+  }
+  .gif{
+    width: 31.25rem;
+  }
+  .win h3{
+    width: 31.25rem;
+  }
+
 }
