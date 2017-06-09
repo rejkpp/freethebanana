@@ -25,7 +25,7 @@ $(document).ready(function() {
  MatchGame.generateCardValues = function () {
    var numberPairs = [];
 
-   for (var c = 1 ; c <=6 ; c++ ) {
+   for (var c = 1 ; c <=8 ; c++ ) {
      numberPairs.push(c,c);
    }
 
@@ -68,7 +68,7 @@ MatchGame.renderCards = function(numbers, $id)
   {
 
     var $newCard;
-    $newCard=$('<div class="col-xs-4 card"></div>');
+    $newCard=$('<div class="col-xs-3 card"></div>');
     $newCard.data('value',numbers[n]);
     $newCard.data('flipped',false);
     $newCard.data('color',colors[numbers[n]-1]);
