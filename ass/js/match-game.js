@@ -49,6 +49,10 @@ MatchGame.renderCards = function(numbers, $id)
   $id.empty();
   var colors;
   var colorValues;
+  var gif_images;
+  var gifs;
+  var win;
+  gifs=[];
   colors=[];
   colorValues=[
     'hsl(25,85%,65%)',
@@ -59,9 +63,22 @@ MatchGame.renderCards = function(numbers, $id)
     'hsl(265,85%,65%)',
     'hsl(310,85%,65%)',
     'hsl(360,85%,65%)'];
+  gif_images=[
+    'url("./ass/img/congrats_1.gif")',
+    'url("./ass/img/congrats_2.gif")',
+    'url("./ass/img/congrats_3.gif")',
+    'url("./ass/img/congrats_4.gif")',
+    'url("./ass/img/congrats_5.gif")',
+    'url("./ass/img/congrats_6.gif")',
+    'url("./ass/img/congrats_7.gif")',
+    'url("./ass/img/congrats_8.gif")'];
   for(var c = 0 ; c< numbers.length/2;c++)
       {
         colors.push(colorValues[c%colorValues.length]);
+      }
+  for(var c = 0 ; c< numbers.length/2;c++)
+      {
+        gifs.push(gif_images[c%gif_images.length]);
       }
 
   for ( var n = 0 ; n < numbers.length ; n++ )
@@ -72,9 +89,12 @@ MatchGame.renderCards = function(numbers, $id)
     $newCard.data('value',numbers[n]);
     $newCard.data('flipped',false);
     $newCard.data('color',colors[numbers[n]-1]);
+    $newCard.data('gif',gifs[numbers[n]-1]);
     $id.append($newCard);
   }
 //  console.log(colors);
+win = Math.floor(Math.random() * gif_images.length);
+$('.gif').css('background-image',gif_images[win]);
 
 //  console.log((numbers.length/2));
   $id.data('currentlyFlipped',[]);
@@ -96,21 +116,28 @@ MatchGame.flipCard = function($some, $id2,numbers)
   {
       return;
   }
-  $some.css('background',$some.data('color')).text($some.data('value')).data('flipped',true);
+  $some.css({'background-image':$some.data('gif'),
+        'background-size': 'cover', 'background-position':'center'})
+  //.text($some.data('value'))
+  .data('flipped',true);
   var solved;
   var opencards;
   var match;
+  var matchBack;
   var closed;
-  solved=$id2.data('solved');
+  solved=$id2.data('solved'); //this data counts matches to determine when game is finished
   match={background:'rgb(153,153,153)'};
+  matchBack={opacity:'0.23'};
   closed={background:'rgb(32,64,86)'};
   opencards = $id2.data('currentlyFlipped'); //sets var to array that holds open cards
   opencards.push($some);
 
   if(opencards.length===2) {
-    if(opencards[0].data('value')===opencards[1].data('value')){
-      opencards[0].css(match);
-      opencards[1].css(match);
+    if(opencards[0].data('gif')===opencards[1].data('gif')){
+  //    opencards[0].css(match);
+  //    opencards[1].css(match);
+      opencards[0].css(matchBack);
+      opencards[1].css(matchBack);
       solved.push('match');
     }
     else{
