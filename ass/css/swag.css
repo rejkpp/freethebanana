@@ -35,10 +35,12 @@ p{
   align-items: center;
   justify-content: center;
 }
-.card::after{
-  display: block;
+.card::before{
+  display: inline;
   content: '';
-  padding-top:100%;
+  padding-top:90%;
+  padding-bottom:90%;
+  font-weight: 400;
 }
 .reset{
   font-size: 2rem;
@@ -69,4 +71,13 @@ p{
   padding-top: 45%;
   background-position: center;
   background-size: contain;
+}
+@media only screen and (min-width:30rem){
+  .card::before{
+    display: inline;
+    content: '';
+    padding-top:45%;
+    padding-bottom:45%;
+    font-weight: 400;
+  }
 }
