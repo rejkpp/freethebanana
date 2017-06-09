@@ -13,7 +13,8 @@ $(document).ready(function() {
   $('.reset').on('click', function(){
     var renderNew=MatchGame.generateCardValues();
     MatchGame.renderCards(renderNew, $game);
-  console.log(renderNew);
+    $('.win').css('display','none');
+    console.log(renderNew);
   });
 });
 
@@ -46,7 +47,7 @@ $(document).ready(function() {
 MatchGame.renderCards = function(numbers, $id)
 {
   $id.empty();
-   var colors;
+  var colors;
   var colorValues;
   colors=[];
   colorValues=[
@@ -74,10 +75,13 @@ MatchGame.renderCards = function(numbers, $id)
     $id.append($newCard);
   }
 //  console.log(colors);
-  $id.data('currentlyFlipped',[])
+
+//  console.log((numbers.length/2));
+  $id.data('currentlyFlipped',[]);
+  $id.data('solved',[]);
   $('.card').on('click', function()
   {
-    MatchGame.flipCard($(this),$id);
+    MatchGame.flipCard($(this),$id,numbers);
   });
 };
 
@@ -86,18 +90,20 @@ MatchGame.renderCards = function(numbers, $id)
   Updates styles on flipped cards depending whether they are a match or not.
  */
 
-MatchGame.flipCard = function($some, $id2)
+MatchGame.flipCard = function($some, $id2,numbers)
 {
   if($some.data('flipped'))
   {
       return;
   }
   $some.css('background',$some.data('color')).text($some.data('value')).data('flipped',true);
+  var solved;
   var opencards;
   var match;
-  var close;
+  var closed;
+  solved=$id2.data('solved');
   match={background:'rgb(153,153,153)'};
-  close={background:'rgb(32,64,86)'};
+  closed={background:'rgb(32,64,86)'};
   opencards = $id2.data('currentlyFlipped'); //sets var to array that holds open cards
   opencards.push($some);
 
@@ -105,14 +111,19 @@ MatchGame.flipCard = function($some, $id2)
     if(opencards[0].data('value')===opencards[1].data('value')){
       opencards[0].css(match);
       opencards[1].css(match);
+      solved.push('match');
     }
     else{
       setTimeout(function(){
-      opencards[0].css(close).text('').data('flipped',false);
-      opencards[1].css(close).text('').data('flipped',false);
+      opencards[0].css(closed).text('').data('flipped',false);
+      opencards[1].css(closed).text('').data('flipped',false);
     },500);
     }
     $id2.data('currentlyFlipped',[]);
   }
+  if(solved.length===(numbers.length/2)){
+    $('.win').css('display','flex');
+  }
+  console.log(solved);
 
 };
