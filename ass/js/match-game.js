@@ -128,7 +128,7 @@ MatchGame.flipCard = function($some, $id2,numbers)
   solved=$id2.data('solved'); //this data counts matches to determine when game is finished
   match={background:'rgb(153,153,153)'};
   matchBack={opacity:'0.23'};
-  closed={background:'rgb(32,64,86)'};
+  closed={background:'#5C3434'};
   opencards = $id2.data('currentlyFlipped'); //sets var to array that holds open cards
   opencards.push($some);
 
