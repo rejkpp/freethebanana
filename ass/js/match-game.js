@@ -99,10 +99,14 @@ $('.gif').css('background-image',gif_images[win]);
 //  console.log((numbers.length/2));
   $id.data('currentlyFlipped',[]);
   $id.data('solved',[]);
-  $('.card').on('click', function()
+
+  if ($id.data('currentlyFlipped').length<2)
   {
-    MatchGame.flipCard($(this),$id,numbers);
-  });
+    $('.card').on('click', function()
+    {
+      MatchGame.flipCard($(this),$id,numbers);
+    });
+  }
 };
 
 /*
@@ -152,5 +156,6 @@ MatchGame.flipCard = function($some, $id2,numbers)
     $('.win').css('display','flex');
   }
   console.log(solved);
+  console.log(  opencards.length);
 
 };
