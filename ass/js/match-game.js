@@ -103,7 +103,11 @@ MatchGame.renderCards = function(numbers, $game)
 
   $('.card').on('click', function()
   {
-    MatchGame.flipCard($(this),$game,numbers);
+    if ($game.data('currentlyFlipped').length==2){
+      return;
+    } else {
+      MatchGame.flipCard($(this),$game,numbers);
+    }
   });
 
 };
@@ -147,17 +151,19 @@ MatchGame.flipCard = function($card, $game,numbers)
       opencards[0].css(matchBack);
       opencards[1].css(matchBack);
       solved.push('match');
+      $game.data('currentlyFlipped',[]);//empty opencards array after match;
       $('.solved').text(solved.length+"/"+numbers.length/2+" solved");
     } else{
       setTimeout(function(){
       opencards[0].css(closed).text('').data('flipped',false);
       opencards[1].css(closed).text('').data('flipped',false);
-      },750);
+      $game.data('currentlyFlipped',[]);//empty opencards array after flip;
+    },750);
     }
-    $game.data('currentlyFlipped',[]);
+    console.log('number of open cards'+opencards.length);
     tries.push('count');
     console.log(solved);
-    console.log(tries.length);
+    console.log(tries.length+" moves");
     $('.tries').text(tries.length+" moves");
   }
   if(solved.length===(numbers.length/2)){
