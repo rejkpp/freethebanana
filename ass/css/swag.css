@@ -14,6 +14,11 @@ h2{
   font-size: 1rem;
   font-weight: bold;
 }
+h5{
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+}
 p{
   color: #213D1F;
 }
