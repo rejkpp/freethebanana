@@ -17,6 +17,9 @@ h2{
 h5{
   margin: 1rem 0.5rem 0 0.5rem;
 }
+h4{
+  font-weight: bold;
+}
 p{
   color: #213D1F;
 }
@@ -63,7 +66,6 @@ p{
   border-radius: 8px;
   cursor: pointer;
   margin:1rem;
-  font-weight: normal;
 }
 .win{
   display: none;
@@ -76,7 +78,6 @@ p{
   text-align: center;
   background: #FFF6D2;
   font-size: 3rem;
-  font-weight: bold;
 }
 .gif{
   background-repeat: no-repeat;
