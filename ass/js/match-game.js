@@ -119,12 +119,6 @@ MatchGame.renderCards = function(numbers, $game)
 
 MatchGame.flipCard = function($card, $game,numbers)
 {
-  function isEven(value) {
-	if (value%2 == 0)
-		return true;
-	else
-		return false;
-  }
   console.log( $card.data('flipped'));
 
   if($card.data('flipped'))
@@ -151,7 +145,14 @@ MatchGame.flipCard = function($card, $game,numbers)
   opencards = $game.data('totalFlipped'); //sets var to array that holds open cards
   opencards.push($card);
 
+  function isEven(value) {
+	if (value%2 == 0)
+		return true;
+	else
+		return false;
+  }
   var n=opencards.length;
+
   if (isEven(n)){//this selects uneven numbers 1,3,5,7, etc...
       if(opencards[(n-2)].data('gif')===opencards[(n-1)].data('gif')){
   //    opencards[0].css(match);
