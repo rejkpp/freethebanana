@@ -15,12 +15,17 @@ h2{
   font-weight: bold;
 }
 h5{
-  font-size: 4rem;
-  font-weight: bold;
-  text-align: center;
+  margin: 1rem 0.5rem 0 0.5rem;
 }
 p{
   color: #213D1F;
+}
+.score,
+.again{
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 2rem;
 }
 .instructions{
   /*margin-top: 5.25rem;*/
