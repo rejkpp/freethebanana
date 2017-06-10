@@ -47,6 +47,8 @@ $(document).ready(function() {
 MatchGame.renderCards = function(numbers, $id)
 {
   $id.empty();
+  $('.tries').empty().text("0 tries");
+  $('.solved').empty().text("0/"+numbers.length/2+" solved");
   var colors;
   var colorValues;
   var gif_images;
@@ -103,7 +105,6 @@ $('.gif').css('background-image',gif_images[win]);
 
   $('.card').on('click', function()
   {
-
     MatchGame.flipCard($(this),$id,numbers);
   });
 
@@ -149,6 +150,7 @@ MatchGame.flipCard = function($some, $id2,numbers)
       opencards[0].css(matchBack);
       opencards[1].css(matchBack);
       solved.push('match');
+      $('.solved').text(solved.length+"/"+numbers.length/2+" solved");
     } else{
       setTimeout(function(){
       opencards[0].css(closed).text('').data('flipped',false);
@@ -159,10 +161,11 @@ MatchGame.flipCard = function($some, $id2,numbers)
     tries.push('count');
     console.log(solved);
     console.log(tries.length);
-    $('.tries').empty().text(tries.length+" tries");
+    $('.tries').text(tries.length+" tries");
   }
   if(solved.length===(numbers.length/2)){
     $('.win').css('display','flex');
+    $('.score').text(solved.length + ' solved in ' + tries.length + ' tries');
   }
 
 };
