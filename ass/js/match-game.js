@@ -97,13 +97,13 @@ MatchGame.renderCards = function(numbers, $game)
   console.log(gifs);
   console.log(colors);
 
-  $game.data('currentlyFlipped',[]); //create data value to store open cards
+  $game.data('totalFlipped',[]); //create data value to store open cards
   $game.data('solved',[]);  //create data value to count matches
   $game.data('tries',[]); //create data value to count moves
 
   $('.card').on('click', function()
   {
-    if ($game.data('currentlyFlipped').length==2){
+    if ($game.data('totalFlipped').length==2){
       return;
     } else {
       MatchGame.flipCard($(this),$game,numbers);
@@ -119,6 +119,12 @@ MatchGame.renderCards = function(numbers, $game)
 
 MatchGame.flipCard = function($card, $game,numbers)
 {
+  function isEven(value) {
+	if (value%2 == 0)
+		return true;
+	else
+		return false;
+  }
   console.log( $card.data('flipped'));
 
   if($card.data('flipped'))
@@ -136,36 +142,38 @@ MatchGame.flipCard = function($card, $game,numbers)
   var closed;
   var tries;
 
+
   tries=$game.data('tries');//this data counts moves to keep score
   solved=$game.data('solved'); //this data counts matches to determine when game is finished
   match={background:'rgb(153,153,153)'}; //this is the css to turn the background grey
   matchBack={opacity:'0.23'};
   closed={background:'#BF5A53'};
-  opencards = $game.data('currentlyFlipped'); //sets var to array that holds open cards
+  opencards = $game.data('totalFlipped'); //sets var to array that holds open cards
   opencards.push($card);
 
-  if(opencards.length===2) {
-    if(opencards[0].data('gif')===opencards[1].data('gif')){
+  var n=opencards.length;
+  if (isEven(n)){//this selects uneven numbers 1,3,5,7, etc...
+      if(opencards[(n-2)].data('gif')===opencards[(n-1)].data('gif')){
   //    opencards[0].css(match);
   //    opencards[1].css(match);
-      opencards[0].css(matchBack);
-      opencards[1].css(matchBack);
-      solved.push('match');
-      $game.data('currentlyFlipped',[]);//empty opencards array after match;
-      $('.solved').text(solved.length+"/"+numbers.length/2+" solved");
-    } else{
-      setTimeout(function(){
-      opencards[0].css(closed).text('').data('flipped',false);
-      opencards[1].css(closed).text('').data('flipped',false);
-      $game.data('currentlyFlipped',[]);//empty opencards array after flip;
-    },750);
+        opencards[(n-2)].css(matchBack);
+        opencards[(n-1)].css(matchBack);
+        solved.push('match');
+        $game.data('totalFlipped',[]);//empty opencards array after match;
+        $('.solved').text(solved.length+"/"+numbers.length/2+" solved");
+        console.log(solved);
+      } else{
+        setTimeout(function(){
+          opencards[(n-2)].css(closed).text('').data('flipped',false);
+          opencards[(n-1)].css(closed).text('').data('flipped',false);
+          $game.data('totalFlipped',[]);//empty opencards array after flip;
+        },750);
+      }
+      tries.push('count');
+      console.log(tries.length+" moves");
+      $('.tries').text(tries.length+" moves");
     }
-    console.log('number of open cards'+opencards.length);
-    tries.push('count');
-    console.log(solved);
-    console.log(tries.length+" moves");
-    $('.tries').text(tries.length+" moves");
-  }
+
   if(solved.length===(numbers.length/2)){
     $('.win').css('display','flex');
     $('.score').text(solved.length + ' solved in ' + tries.length + ' moves');
