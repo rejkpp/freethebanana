@@ -7,7 +7,7 @@ var MatchGame = {};
 
 $(document).ready(function() {
   var $game=$('#game');
-  var render=MatchGame.generateCardValues(4);
+  var render=MatchGame.generateCardValues(6);
   MatchGame.renderCards(render, $game );
   console.log(render);
   $('.reset').on('click', function(){
