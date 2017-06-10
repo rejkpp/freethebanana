@@ -21,6 +21,7 @@ p{
   color: #213D1F;
 }
 .score,
+.stats,
 .again{
   display: flex;
   justify-content: center;
