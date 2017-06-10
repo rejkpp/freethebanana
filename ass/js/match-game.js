@@ -99,6 +99,7 @@ $('.gif').css('background-image',gif_images[win]);
 //  console.log((numbers.length/2));
   $id.data('currentlyFlipped',[]);
   $id.data('solved',[]);
+  $id.data('tries',[]);
 
   $('.card').on('click', function()
   {
@@ -129,8 +130,10 @@ MatchGame.flipCard = function($some, $id2,numbers)
   var match;
   var matchBack;
   var closed;
+  var tries;
 
-
+  tries=$id2.data('tries');//this data counts tries to keep score
+  tries=$id2.data('tries');//this data counts tries to keep score
   solved=$id2.data('solved'); //this data counts matches to determine when game is finished
   match={background:'rgb(153,153,153)'};
   matchBack={opacity:'0.23'};
@@ -150,14 +153,16 @@ MatchGame.flipCard = function($some, $id2,numbers)
       setTimeout(function(){
       opencards[0].css(closed).text('').data('flipped',false);
       opencards[1].css(closed).text('').data('flipped',false);
-    },750);
+      },750);
     }
     $id2.data('currentlyFlipped',[]);
+    tries.push('count');
+    console.log(solved);
+    console.log(tries.length);
+    $('.tries').empty().text(tries.length+" tries");
   }
-
   if(solved.length===(numbers.length/2)){
     $('.win').css('display','flex');
   }
-  console.log(solved);
 
 };
