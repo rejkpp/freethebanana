@@ -154,10 +154,7 @@ MatchGame.flipCard = function($some, $id2,numbers)
     }
     $id2.data('currentlyFlipped',[]);
   }
-  else if (opencards.length===3){
-    opencards[0].css(closed).text('').data('flipped',false);
-    opencards[1].css(closed).text('').data('flipped',false);
-  }
+
   if(solved.length===(numbers.length/2)){
     $('.win').css('display','flex');
   }
