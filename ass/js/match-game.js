@@ -100,13 +100,12 @@ $('.gif').css('background-image',gif_images[win]);
   $id.data('currentlyFlipped',[]);
   $id.data('solved',[]);
 
-  if ($id.data('currentlyFlipped').length<2)
+  $('.card').on('click', function()
   {
-    $('.card').on('click', function()
-    {
-      MatchGame.flipCard($(this),$id,numbers);
-    });
-  }
+
+    MatchGame.flipCard($(this),$id,numbers);
+  });
+
 };
 
 /*
@@ -116,6 +115,7 @@ $('.gif').css('background-image',gif_images[win]);
 
 MatchGame.flipCard = function($some, $id2,numbers)
 {
+  console.log( $some.data('flipped'));
   if($some.data('flipped'))
   {
       return;
@@ -129,13 +129,16 @@ MatchGame.flipCard = function($some, $id2,numbers)
   var match;
   var matchBack;
   var closed;
+
+
   solved=$id2.data('solved'); //this data counts matches to determine when game is finished
   match={background:'rgb(153,153,153)'};
   matchBack={opacity:'0.23'};
   closed={background:'#BF5A53'};
   opencards = $id2.data('currentlyFlipped'); //sets var to array that holds open cards
   opencards.push($some);
-
+  var cardTimer;
+  clearTimeout(cardTimer);
   if(opencards.length===2) {
     if(opencards[0].data('gif')===opencards[1].data('gif')){
   //    opencards[0].css(match);
@@ -143,8 +146,7 @@ MatchGame.flipCard = function($some, $id2,numbers)
       opencards[0].css(matchBack);
       opencards[1].css(matchBack);
       solved.push('match');
-    }
-    else{
+    } else{
       setTimeout(function(){
       opencards[0].css(closed).text('').data('flipped',false);
       opencards[1].css(closed).text('').data('flipped',false);
@@ -152,10 +154,13 @@ MatchGame.flipCard = function($some, $id2,numbers)
     }
     $id2.data('currentlyFlipped',[]);
   }
+  else if (opencards.length===3){
+    opencards[0].css(closed).text('').data('flipped',false);
+    opencards[1].css(closed).text('').data('flipped',false);
+  }
   if(solved.length===(numbers.length/2)){
     $('.win').css('display','flex');
   }
   console.log(solved);
-  console.log(  opencards.length);
 
 };
