@@ -62,9 +62,10 @@ p{
   border-radius: 8px;
   cursor: pointer;
   margin:1rem;
+  font-weight: normal;
 }
 .win{
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   position: fixed;
@@ -74,11 +75,12 @@ p{
   text-align: center;
   background: #FFF6D2;
   font-size: 3rem;
+  font-weight: bold;
 }
 .gif{
   background-repeat: no-repeat;
   height: 30%;
-  margin-top: 2rem;
+  /*margin-top: 2rem;*/
   background-position: center;
   background-size: contain;
   width: 100%;
