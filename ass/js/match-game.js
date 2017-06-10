@@ -7,11 +7,11 @@ var MatchGame = {};
 
 $(document).ready(function() {
   var $game=$('#game');
-  var render=MatchGame.generateCardValues();
+  var render=MatchGame.generateCardValues(4);
   MatchGame.renderCards(render, $game );
   console.log(render);
   $('.reset').on('click', function(){
-    var renderNew=MatchGame.generateCardValues();
+    var renderNew=MatchGame.generateCardValues(6);
     MatchGame.renderCards(renderNew, $game);
     $('.win').css('display','none');
     console.log(renderNew);
@@ -22,10 +22,10 @@ $(document).ready(function() {
   Generates and returns an array of matching card values.
  */
 
- MatchGame.generateCardValues = function () {
+ MatchGame.generateCardValues = function (pairs) {
    var numberPairs = [];
 
-   for (var c = 1 ; c <=8 ; c++ ) {
+   for (var c = 1 ; c <=pairs ; c++ ) {
      numberPairs.push(c,c);
    }
 
@@ -44,16 +44,16 @@ $(document).ready(function() {
   object.
 */
 
-MatchGame.renderCards = function(numbers, $id)
+MatchGame.renderCards = function(numbers, $game)
 {
-  $id.empty();
-  $('.tries').empty().text("0 tries");
-  $('.solved').empty().text("0/"+numbers.length/2+" solved");
-  var colors;
-  var colorValues;
-  var gif_images;
-  var gifs;
-  var win;
+  $game.empty(); //this resets the html of cards
+  $('.tries').empty().text("0 moves"); //this resets the moves count display
+  $('.solved').empty().text("0/"+numbers.length/2+" solved"); //this resets the solved count display
+  var colors; //array variable to be filled with colors to be used based on number of pairs
+  var colorValues; //array variable with 8 color set
+  var gif_images; //array with 8 images
+  var gifs; //array variable to be filled with images based on number of pairs
+  var win; //variable for choosing the congratulations "win" image
   gifs=[];
   colors=[];
   colorValues=[
@@ -74,38 +74,36 @@ MatchGame.renderCards = function(numbers, $id)
     'url("./ass/img/congrats_6.gif")',
     'url("./ass/img/congrats_7.gif")',
     'url("./ass/img/congrats_8.gif")'];
+
+  win = Math.floor(Math.random() * gif_images.length);
+  $('.gif').css('background-image',gif_images[win]);//chooses winning image
+
   for(var c = 0 ; c< numbers.length/2;c++)
-      {
-        colors.push(colorValues[c%colorValues.length]);
-      }
-  for(var c = 0 ; c< numbers.length/2;c++)
-      {
-        gifs.push(gif_images[c%gif_images.length]);
-      }
+  {
+    colors.push(colorValues[c%colorValues.length]);
+    gifs.push(gif_images[c%gif_images.length]);
+  }
 
   for ( var n = 0 ; n < numbers.length ; n++ )
   {
-
     var $newCard;
     $newCard=$('<div class="col-xs-3 card"></div>');
     $newCard.data('value',numbers[n]);
     $newCard.data('flipped',false);
     $newCard.data('color',colors[numbers[n]-1]);
     $newCard.data('gif',gifs[numbers[n]-1]);
-    $id.append($newCard);
+    $game.append($newCard);
   }
-//  console.log(colors);
-win = Math.floor(Math.random() * gif_images.length);
-$('.gif').css('background-image',gif_images[win]);
+  console.log(gifs);
+  console.log(colors);
 
-//  console.log((numbers.length/2));
-  $id.data('currentlyFlipped',[]);
-  $id.data('solved',[]);
-  $id.data('tries',[]);
+  $game.data('currentlyFlipped',[]); //create data value to store open cards
+  $game.data('solved',[]);  //create data value to count matches
+  $game.data('tries',[]); //create data value to count moves
 
   $('.card').on('click', function()
   {
-    MatchGame.flipCard($(this),$id,numbers);
+    MatchGame.flipCard($(this),$game,numbers);
   });
 
 };
@@ -115,16 +113,17 @@ $('.gif').css('background-image',gif_images[win]);
   Updates styles on flipped cards depending whether they are a match or not.
  */
 
-MatchGame.flipCard = function($some, $id2,numbers)
+MatchGame.flipCard = function($card, $game,numbers)
 {
-  console.log( $some.data('flipped'));
-  if($some.data('flipped'))
+  console.log( $card.data('flipped'));
+
+  if($card.data('flipped'))
   {
       return;
   }
-  $some.css({'background-image':$some.data('gif'),
+  $card.css({'background-image':$card.data('gif'),
         'background-size': 'cover', 'background-position':'center'})
-  //.text($some.data('value'))
+  //.text($card.data('value'))
   .data('flipped',true);
   var solved;
   var opencards;
@@ -133,16 +132,14 @@ MatchGame.flipCard = function($some, $id2,numbers)
   var closed;
   var tries;
 
-  tries=$id2.data('tries');//this data counts tries to keep score
-  tries=$id2.data('tries');//this data counts tries to keep score
-  solved=$id2.data('solved'); //this data counts matches to determine when game is finished
-  match={background:'rgb(153,153,153)'};
+  tries=$game.data('tries');//this data counts moves to keep score
+  solved=$game.data('solved'); //this data counts matches to determine when game is finished
+  match={background:'rgb(153,153,153)'}; //this is the css to turn the background grey
   matchBack={opacity:'0.23'};
   closed={background:'#BF5A53'};
-  opencards = $id2.data('currentlyFlipped'); //sets var to array that holds open cards
-  opencards.push($some);
-  var cardTimer;
-  clearTimeout(cardTimer);
+  opencards = $game.data('currentlyFlipped'); //sets var to array that holds open cards
+  opencards.push($card);
+
   if(opencards.length===2) {
     if(opencards[0].data('gif')===opencards[1].data('gif')){
   //    opencards[0].css(match);
@@ -157,15 +154,15 @@ MatchGame.flipCard = function($some, $id2,numbers)
       opencards[1].css(closed).text('').data('flipped',false);
       },750);
     }
-    $id2.data('currentlyFlipped',[]);
+    $game.data('currentlyFlipped',[]);
     tries.push('count');
     console.log(solved);
     console.log(tries.length);
-    $('.tries').text(tries.length+" tries");
+    $('.tries').text(tries.length+" moves");
   }
   if(solved.length===(numbers.length/2)){
     $('.win').css('display','flex');
-    $('.score').text(solved.length + ' solved in ' + tries.length + ' tries');
+    $('.score').text(solved.length + ' solved in ' + tries.length + ' moves');
   }
 
 };
