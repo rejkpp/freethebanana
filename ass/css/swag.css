@@ -15,7 +15,7 @@ h2{
   font-weight: bold;
 }
 h5{
-  margin: 1rem 0.5rem 0 0.5rem;
+  margin: 1rem 0.5rem 0.5rem 0.5rem;
 }
 h4{
   font-weight: bold;
@@ -57,6 +57,7 @@ p{
   font-weight: 400;
 }
 .reset{
+  display: none;
   font-size: 2rem;
   padding: 1rem;
   text-align: center;
@@ -87,6 +88,23 @@ p{
   background-size: contain;
   width: 100%;
 }
+.levels{
+  display: flex;
+  margin: auto;
+  flex-flow: column;
+  width: 70%;
+  text-align: center;
+  font-size: 2rem;
+}
+.one,
+.two,
+.three{
+  cursor: pointer;
+}
+.levels_header h5{
+  font-size: 2rem;
+  display: none;
+}
 @media only screen and (min-width:40rem){
   .card::before{
     display: inline;
@@ -103,6 +121,10 @@ p{
   }
   .win h3{
     width: 31.25rem;
+  }
+  .levels{
+    flex-direction: row;
+    width: 100%;
   }
 
 }
