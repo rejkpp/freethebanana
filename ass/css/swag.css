@@ -131,6 +131,16 @@ p{
   background: #FFF6D2;
   border: 4px solid #474554;
 }
+.banana_animate {
+	animation-name: rotate;
+	animation-duration: .69s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+@keyframes rotate {
+	from {transform: scale( 1.23 );}
+	to {transform: scale( 1 );}
+}
 @media only screen and (min-width:40rem){
   .card{
     font-size: 6rem;
@@ -158,5 +168,4 @@ p{
     flex-direction: row;
     width: 100%;
   }
-
 }
