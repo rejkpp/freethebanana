@@ -1,4 +1,4 @@
-var MatchGame = {};
+var FreeBanana = {};
 
 /*
   Sets up a new game after HTML document has loaded.
@@ -10,8 +10,8 @@ $(document).ready(function() {
   var banana=false;
   var $banana=$('.banana');
   var renderOnClick= function(){
-    var numbers=MatchGame.generateCardValues(level);
-    MatchGame.renderCards( numbers, $game, banana );
+    var numbers=FreeBanana.generateCardValues(level);
+    FreeBanana.renderCards( numbers, $game, banana );
     $('.levels').css('display','none');//removes initial levels display
     $('.levels_header h5').css('display','inline-block');//display levels in instructions section
     $('.reset').css('display','block');//display reset button
@@ -52,7 +52,7 @@ $(document).ready(function() {
   Generates and returns an array of matching card values.
  */
 
- MatchGame.generateCardValues = function (pairs) {
+ FreeBanana.generateCardValues = function (pairs) {
    var numberPairs = [];
 
    for (var c = 1 ; c <=pairs ; c++ ) {
@@ -74,7 +74,7 @@ $(document).ready(function() {
   object.
 */
 
-MatchGame.renderCards = function(numbers, $game, banana)
+FreeBanana.renderCards = function(numbers, $game, banana)
 {
   var colors; //array variable to be filled with colors to be used based on number of pairs
   var colorValues; //array variable with 8 color set
@@ -145,7 +145,7 @@ MatchGame.renderCards = function(numbers, $game, banana)
     if ($game.data('totalFlipped').length==2){//check the length to stop execution until the cards are closed back
       return;
     } else {
-      MatchGame.flipCard($(this),$game,level,banana);
+      FreeBanana.flipCard($(this),$game,level,banana);
     }
   });
 
@@ -156,7 +156,7 @@ MatchGame.renderCards = function(numbers, $game, banana)
   Updates styles on flipped cards depending whether they are a match or not.
  */
 
-MatchGame.flipCard = function($card, $game, level, banana)
+FreeBanana.flipCard = function($card, $game, level, banana)
 {
   if($card.data('flipped')){//this checks if the card clicked on is already open
     return;
