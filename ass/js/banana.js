@@ -235,8 +235,11 @@ FreeBanana.flipCard = function($card, $game, level, banana)
         $('.again').empty().text('Good Job! Now, improve your score to free the bananas');
       }
     } else if (level===6){
-      $('.again').empty().text('You got this! try the next level to free the bananas');
+      $('.again').empty().text('You got this! Try the next level to free the bananas');
+      $('.next').addClass("three"); //style banana button
     } else {
+      $('.again').empty().text('Way to go! Time for the next level');
+      $('.next').addClass("two"); //style banana button
     }
     $('.win').css('display','flex'); //display win on last match
   }
