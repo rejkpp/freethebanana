@@ -35,7 +35,7 @@ $(document).ready(function() {
   });
   $('.banana').on('click', function(){
     $('.card').toggleClass("banana_style_button");
-    $('body, p').toggleClass("banana_style");
+    $('body, p, .win').toggleClass("banana_style");
     $(this).toggleClass("banana_button");
 
     banana=!banana;
