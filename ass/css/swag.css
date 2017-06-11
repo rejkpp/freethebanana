@@ -98,6 +98,9 @@ p{
 .three{
   cursor: pointer;
 }
+.levels_header{
+  text-align: center;
+}
 .levels_header h5{
   font-size: 2rem;
   display: none;
