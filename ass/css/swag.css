@@ -133,7 +133,7 @@ p{
 }
 @media only screen and (min-width:40rem){
   .card{
-    font-size: 7rem;
+    font-size: 6rem;
   }
   .banana_style{
     background-size: 12%;
