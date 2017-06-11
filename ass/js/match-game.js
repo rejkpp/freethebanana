@@ -10,13 +10,13 @@ $(document).ready(function() {
   var banana=false;
   var $banana=$('.banana');
   var renderOnClick= function(){
-    var render=MatchGame.generateCardValues(level);
-    MatchGame.renderCards( render, $game, banana );
+    var numbers=MatchGame.generateCardValues(level);
+    MatchGame.renderCards( numbers, $game, banana );
     $('.levels').css('display','none');//removes initial levels display
     $('.levels_header h5').css('display','inline-block');//display levels in instructions section
     $('.reset').css('display','block');//display reset button
     $('.win').css('display','none');//clear congrats/win page
-    console.log(render);//cheat for the console
+    console.log(numbers);//cheat for the console
   };
   $('.one').on('click',function(){
     level=4;
@@ -59,14 +59,14 @@ $(document).ready(function() {
      numberPairs.push(c,c);
    }
 
-   var cardValues =[];
+   var numbers =[];
 
    while(numberPairs.length > 0) {
      var randomIndex = Math.floor(Math.random() * numberPairs.length);
      var randomNumber= numberPairs.splice(randomIndex,1)[0];
      cardValues.push(randomNumber);
    }
-   return cardValues;
+   return numbers;
  };
 
 /*
@@ -76,14 +76,19 @@ $(document).ready(function() {
 
 MatchGame.renderCards = function(numbers, $game, banana)
 {
-  $game.empty(); //this resets the html of cards
-  $('.moves').empty().text("0 moves"); //this resets the moves count display
-  $('.solved').empty().text("0/"+numbers.length/2+" solved"); //this resets the solved count display
   var colors; //array variable to be filled with colors to be used based on number of pairs
   var colorValues; //array variable with 8 color set
   var gif_images; //array with 8 images
   var gifs; //array variable to be filled with images based on number of pairs
   var win; //variable for choosing the congratulations "win" image
+  var level;//set variable to check level
+  level=numbers.length/2;//set level to size of array divided by 2
+
+  $game.empty(); //this resets the html of cards
+  $('.moves').empty().text("0 moves"); //this resets the moves count display
+  $('.solved').empty().text("0/"+level+" solved"); //this resets the solved count display
+
+  console.log(level);
   gifs=[];
   colors=[];
   colorValues=[
@@ -102,26 +107,22 @@ MatchGame.renderCards = function(numbers, $game, banana)
     'url("./ass/img/congrats_4.gif")',
     'url("./ass/img/congrats_5.gif")',
     'url("./ass/img/congrats_6.gif")',
-    'url("./ass/img/congrats_7.gif")',//this is BANANA
+    'url("./ass/img/congrats_7.gif")',
     'url("./ass/img/congrats_8.gif")'];
 
-  for(var c = 0 ; c< numbers.length/2;c++)
+  win = Math.floor(Math.random() * gif_images.length);
+  $('.gif').css('background-image',gif_images[win]);//chooses winning image
+
+  for(var c = 0 ; c< level ; c++)
   {
     if(!banana){
       colors.push(colorValues[c%colorValues.length]);
-      if(numbers.length===16){
-        $('.gif').css('background-image',gif_images[6]);//set winning image to #7 which is BANANA
-      } else{  win = Math.floor(Math.random() * colors.length);
-        $('.gif').css('background-image',gif_images[win]);//choose winning image based on length of colors array (4 or 6)
-      }
     } else {
       gifs.push(gif_images[c%gif_images.length]);
-      win = Math.floor(Math.random() * gifs.length);
-      $('.gif').css('background-image',gifs[win]);//choose winning image based on length of
     }
   }
 
-  for ( var n = 0 ; n < numbers.length ; n++ )
+  for ( var n = 0 ; n < (2 * level) ; n++ )
   {
     var $newCard;
     if(!banana){
@@ -144,7 +145,7 @@ MatchGame.renderCards = function(numbers, $game, banana)
     if ($game.data('totalFlipped').length==2){//check the length to stop execution until the cards are closed back
       return;
     } else {
-      MatchGame.flipCard($(this),$game,numbers,banana);
+      MatchGame.flipCard($(this),$game,level,banana);
     }
   });
 
@@ -155,7 +156,7 @@ MatchGame.renderCards = function(numbers, $game, banana)
   Updates styles on flipped cards depending whether they are a match or not.
  */
 
-MatchGame.flipCard = function($card, $game, numbers, banana)
+MatchGame.flipCard = function($card, $game, level, banana)
 {
   if($card.data('flipped')){//this checks if the card clicked on is already open
     return;
@@ -163,8 +164,10 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
   var opencards;//create var to store open cards
   var matchBack;//create var to store css for solves cards
   var closed;//create var to store css for closing the cards
-  var moves;//create var to store number of moves
-  var solved;//create var to count matches
+  var movesData;//create var to store amount of moves
+  var moves;//create var to store total moves
+  var solvedData;//create var to store amount of solved
+  var solved;//create var to store total solved
   var n;//create var to store length of array that holds open cards
 
   if(!banana){//check banana toggle
@@ -180,8 +183,10 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
       closed={'background': '#FFF6D2'};
   }
 
-  moves=$game.data('moves');//this data counts moves to keep score
-  solved=$game.data('solved'); //this data counts matches to determine when game is finished
+  movesData=$game.data('moves');//this data counts moves to keep score
+  moves=movesData.length; //set var to total amount of moves (size of movesData)
+  solvedData=$game.data('solved'); //this data counts matches to determine when game is finished
+  solved=solvedData.length; //set var to be the total amount solved (size of solvedDate)
   matchBack={opacity:'0.23'};//this variable sets the css rules for matched cards
   opencards = $game.data('totalFlipped');//sets var to array that holds open cards
   opencards.push($card); //this stores the clicked on card in the array that holds open cards
@@ -199,9 +204,9 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
       if(opencards[(n-2)].data('value')===opencards[(n-1)].data('value')){
         opencards[(n-2)].css(matchBack);
         opencards[(n-1)].css(matchBack);
-        solved.push('match');//store match for count
+        solvedData.push('match');//store match for count
         $game.data('totalFlipped',[]);//empty opencards array after match;
-        $('.solved').text(solved.length+"/"+numbers.length/2+" solved"); //update score on UI
+        $('.solved').text(solved+"/"+level+" solved"); //update score on UI
       } else{
         setTimeout(function(){
           opencards[(n-2)].css(closed).text('').data('flipped',false);
@@ -209,13 +214,31 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
           $game.data('totalFlipped',[]);//empty opencards array after flip;
         },890);
       }
-      moves.push('count');//store move for count
-      $('.moves').text(moves.length+" moves");//update moves on UI
+      movesData.push('count');//store move for count
+      $('.moves').text(moves+" moves");//update moves on UI
     }
 
-  if(solved.length===(numbers.length/2)){
+  if(solved=== level) {
+    $('.score').text(solved + ' solved in ' + moves + ' moves');
+    if (level===8){
+      if (!banana && moves <= 16 ){
+        $('.gif').css('background-image',"url('./ass/img/secret_banana.gif')");//chooses winning image
+        $('.score').empty().text(solved + ' solved in ' + moves + ' moves');
+        $('.again').empty().text('2nd banana found, Good Job! The 3rd one is hiding amoungst the minions. Press on the jumping banana to enter Banana level. There you can free the 3rd banana. Hurry before the minions find & eat him.');
+      } else if (banana && moves <= 14 ) {
+        $('.gif').css("background-image","url('./ass/img/top_secret_banana.gif')");//chooses winning image
+        $('.score').empty().text(solved + ' solved in ' + moves + ' moves');
+        $('.again').empty().text('wh00t wh00t!!! You saved Humba from the minions. Now YOU get to eat the banana :smirk:! Enjoy :yum:');
+      } else {
+        $('.score').empty().text(solved + ' solved in ' + moves + ' moves');
+        $('.again').empty().text('Good Job! Now, improve your score to free the banana');
+      }
+    } else if (level===6){
+
+    } if
+      {
+    }
     $('.win').css('display','flex'); //display win on last match
-    $('.score').text(solved.length + ' solved in ' + moves.length + ' moves');
   }
 
 };
