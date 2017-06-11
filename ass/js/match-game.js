@@ -2,21 +2,21 @@ var MatchGame = {};
 
 /*
   Sets up a new game after HTML document has loaded.
-  Renders a 4x4 board of cards.
 */
 
 $(document).ready(function() {
   var $game=$('#game');
   var level;
   var banana=false;
+  var $banana=$('.banana');
   var renderOnClick= function(){
     var render=MatchGame.generateCardValues(level);
     MatchGame.renderCards( render, $game, banana );
-    $('.levels').css('display','none');
-    $('.levels_header h5').css('display','inline-block');
-    $('.reset').css('display','block');
-    $('.win').css('display','none');
-    console.log(render);
+    $('.levels').css('display','none');//removes initial levels display
+    $('.levels_header h5').css('display','inline-block');//display levels in instructions section
+    $('.reset').css('display','block');//display reset button
+    $('.win').css('display','none');//clear congrats/win page
+    console.log(render);//cheat for the console
   };
   $('.one').on('click',function(){
     level=4;
@@ -33,18 +33,19 @@ $(document).ready(function() {
   $('.reset').on('click', function(){
     renderOnClick();
   });
-  $('.banana').on('click', function(){
-    $('.card').toggleClass("banana_style_button");
-    $('body, p, .win').toggleClass("banana_style");
-    $(this).toggleClass("banana_button");
-
-    banana=!banana;
-    console.log(banana);
-    if(level){
+  $banana.on('click', function(){ //toggle banana style on click banana button
+    $('.card').toggleClass("banana_style_button"); //style cards on welcome screen
+    $('body, p, .win').toggleClass("banana_style"); //style body text and win backgroud and color
+    $(this).toggleClass("banana_button"); //style banana button
+    banana=!banana; //change banana boolean state
+    if(level){ //only runs if level has been set
       renderOnClick();
     }
   });
-
+  $banana.addClass('banana_animate');//animation for banana button on load
+  setTimeout( function() {
+    $banana.removeClass('banana_animate');
+  }, 3450 );
 });
 
 /*
@@ -76,7 +77,7 @@ $(document).ready(function() {
 MatchGame.renderCards = function(numbers, $game, banana)
 {
   $game.empty(); //this resets the html of cards
-  $('.tries').empty().text("0 moves"); //this resets the moves count display
+  $('.moves').empty().text("0 moves"); //this resets the moves count display
   $('.solved').empty().text("0/"+numbers.length/2+" solved"); //this resets the solved count display
   var colors; //array variable to be filled with colors to be used based on number of pairs
   var colorValues; //array variable with 8 color set
@@ -109,37 +110,34 @@ MatchGame.renderCards = function(numbers, $game, banana)
 
   for(var c = 0 ; c< numbers.length/2;c++)
   {
-    if(banana){
-      gifs.push(gif_images[c%gif_images.length]);
-    } else {
+    if(!banana){
       colors.push(colorValues[c%colorValues.length]);
+    } else {
+      gifs.push(gif_images[c%gif_images.length]);
     }
   }
 
   for ( var n = 0 ; n < numbers.length ; n++ )
   {
     var $newCard;
-    if(banana){
-        $newCard=$('<div class="col-xs-3 card banana_style_button"></div>');
-    } else {
+    if(!banana){
       $newCard=$('<div class="col-xs-3 card "></div>');
+    } else {
+      $newCard=$('<div class="col-xs-3 card banana_style_button"></div>');
     }
-    $newCard.data('value',numbers[n]);
-    $newCard.data('flipped',false);
-    $newCard.data('color',colors[numbers[n]-1]);
-    $newCard.data('gif',gifs[numbers[n]-1]);
+    $newCard.data('value',numbers[n]);//this data stores the number value
+    $newCard.data('flipped',false); //this data sets the state of open or closed card
+    $newCard.data('color',colors[numbers[n]-1]); //this stores one color for one pair
+    $newCard.data('gif',gifs[numbers[n]-1]); //this stores one gif for one pair
     $game.append($newCard);
   }
-  console.log(gifs);
-  console.log(colors);
-
-  $game.data('totalFlipped',[]); //create data value to store open cards
   $game.data('solved',[]);  //create data value to count matches
-  $game.data('tries',[]); //create data value to count moves
+  $game.data('moves',[]); //create data value to count moves
+  $game.data('totalFlipped',[]); //create data value to store open cards
 
   $('.card').on('click', function()
   {
-    if ($game.data('totalFlipped').length==2){
+    if ($game.data('totalFlipped').length==2){//check the length to stop execution until the cards are closed back
       return;
     } else {
       MatchGame.flipCard($(this),$game,numbers,banana);
@@ -155,55 +153,35 @@ MatchGame.renderCards = function(numbers, $game, banana)
 
 MatchGame.flipCard = function($card, $game, numbers, banana)
 {
-  console.log( $card.data('flipped'));
+  if($card.data('flipped')){//this checks if the card clicked on is already open
+    return;
+  }
+  var opencards;//create var to store open cards
+  var matchBack;//create var to store css for solves cards
+  var closed;//create var to store css for closing the cards
+  var moves;//create var to store number of moves
+  var solved;//create var to count matches
+  var n;//create var to store length of array that holds open cards
 
-  if($card.data('flipped'))
-  {
-      return;
-  }
-  if(!banana){
-    $card.css({'background-color':$card.data('color'),})
-      .text($card.data('value'))
-      .data('flipped',true);
-    closed={background:'#BF5A53'};
-  }
-  else {
-    $card.css({'background-image':$card.data('gif'),
+  if(!banana){//check banana toggle
+      $card.css({'background-color':$card.data('color'),})
+        .text($card.data('value'))
+        .data('flipped',true);
+      closed={background:'#BF5A53'};
+  } else {
+      $card.css({'background-image':$card.data('gif'),
         'background-size': 'cover',
         'background-position':'center'})
         .data('flipped',true);
-    closed={'background': '#FFF6D2',
-      'border': '4px solid #000',
-      'background-repeat': 'no-repeat',
-      'background-position': 'center',
-      'background-size': '23%'};
-  }
-  if (screen.width >= 640) {
-    if(!banana){
-      closed={background:'#BF5A53'};
-    }
-    else {
-      closed={'background': '#FFF6D2',
-      'border': '4px solid #000',
-      'background-repeat': 'no-repeat',
-      'background-position': 'center',
-      'background-size': '12%'};
-    }
+      closed={'background': '#FFF6D2'};
   }
 
-  var solved;
-  var opencards;
-  var match;
-  var matchBack;
-  var closed;
-  var tries;
-
-  tries=$game.data('tries');//this data counts moves to keep score
+  moves=$game.data('moves');//this data counts moves to keep score
   solved=$game.data('solved'); //this data counts matches to determine when game is finished
-  match={background:'rgb(153,153,153)'}; //this is the css to turn the background grey
-  matchBack={opacity:'0.23'};
-  opencards = $game.data('totalFlipped'); //sets var to array that holds open cards
-  opencards.push($card);
+  matchBack={opacity:'0.23'};//this variable sets the css rules for matched cards
+  opencards = $game.data('totalFlipped');//sets var to array that holds open cards
+  opencards.push($card); //this stores the clicked on card in the array that holds open cards
+  n=opencards.length; //this is for ease of use in the later loop
 
   function isEven(value) {
 	if (value%2 == 0)
@@ -211,31 +189,29 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
 	else
 		return false;
   }
-  var n=opencards.length;
 
+  //I changed the loop in order to attempt immediate close of open cards open new click
   if (isEven(n)){//this selects uneven numbers 1,3,5,7, etc...
       if(opencards[(n-2)].data('value')===opencards[(n-1)].data('value')){
         opencards[(n-2)].css(matchBack);
         opencards[(n-1)].css(matchBack);
-        solved.push('match');
+        solved.push('match');//store match for count
         $game.data('totalFlipped',[]);//empty opencards array after match;
-        $('.solved').text(solved.length+"/"+numbers.length/2+" solved");
-        console.log(solved);
+        $('.solved').text(solved.length+"/"+numbers.length/2+" solved"); //update score on UI
       } else{
         setTimeout(function(){
           opencards[(n-2)].css(closed).text('').data('flipped',false);
           opencards[(n-1)].css(closed).text('').data('flipped',false);
           $game.data('totalFlipped',[]);//empty opencards array after flip;
-        },750);
+        },890);
       }
-      tries.push('count');
-      console.log(tries.length+" moves");
-      $('.tries').text(tries.length+" moves");
+      moves.push('count');//store move for count
+      $('.moves').text(moves.length+" moves");//update moves on UI
     }
 
   if(solved.length===(numbers.length/2)){
-    $('.win').css('display','flex');
-    $('.score').text(solved.length + ' solved in ' + tries.length + ' moves');
+    $('.win').css('display','flex'); //display win on last match
+    $('.score').text(solved.length + ' solved in ' + moves.length + ' moves');
   }
 
 };
