@@ -171,7 +171,6 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
         .data('flipped',true);
     closed={'background': '#FFD73D',
       'border': '4px solid #4A3E12',
-      // 'background-image': 'url("./ass/img/banana.svg")',
       'background-repeat': 'no-repeat',
       'background-position': 'center',
       'background-size': '23%'};
@@ -183,7 +182,6 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
     else {
       closed={'background': '#FFD73D',
       'border': '4px solid #4A3E12',
-      // 'background-image': 'url("./ass/img/banana.svg")',
       'background-repeat': 'no-repeat',
       'background-position': 'center',
       'background-size': '12%'};
