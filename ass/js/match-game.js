@@ -16,7 +16,6 @@ $(document).ready(function() {
     $('.reset').css('display','block');
     $('.win').css('display','none');
     console.log(render);
-    return level;
   };
   $('.one').on('click',function(){
     level=4;
@@ -30,11 +29,8 @@ $(document).ready(function() {
     level=8;
     renderOnClick();
   });
-  // MatchGame.renderCards(render, $game );
-  // console.log(render);
   $('.reset').on('click', function(){
     renderOnClick();
-
   });
 });
 
