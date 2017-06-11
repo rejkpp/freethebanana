@@ -176,7 +176,8 @@ p{
   .win{
     align-items: center;
   }
-  .gif{
+  .gif,
+  .again{
     width: 31.25rem;
   }
   .win h3{
