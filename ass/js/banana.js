@@ -37,6 +37,7 @@ $(document).ready(function() {
     $('.card').toggleClass("banana_style_button"); //style cards on welcome screen
     $('body, p, .win').toggleClass("banana_style"); //style body text and win backgroud and color
     $(this).toggleClass("banana_button"); //style banana button
+    $('.next').toggleClass("next_banana"); //style banana button
     banana=!banana; //change banana boolean state
     if(level){ //only runs if level has been set
       renderOnClick();
@@ -64,7 +65,7 @@ $(document).ready(function() {
    while(numberPairs.length > 0) {
      var randomIndex = Math.floor(Math.random() * numberPairs.length);
      var randomNumber= numberPairs.splice(randomIndex,1)[0];
-     cardValues.push(randomNumber);
+     numbers.push(randomNumber);
    }
    return numbers;
  };
@@ -183,14 +184,14 @@ FreeBanana.flipCard = function($card, $game, level, banana)
       closed={'background': '#FFF6D2'};
   }
 
-  movesData=$game.data('moves');//this data counts moves to keep score
-  moves=movesData.length; //set var to total amount of moves (size of movesData)
-  solvedData=$game.data('solved'); //this data counts matches to determine when game is finished
-  solved=solvedData.length; //set var to be the total amount solved (size of solvedDate)
-  matchBack={opacity:'0.23'};//this variable sets the css rules for matched cards
   opencards = $game.data('totalFlipped');//sets var to array that holds open cards
   opencards.push($card); //this stores the clicked on card in the array that holds open cards
   n=opencards.length; //this is for ease of use in the later loop
+  moves=$game.data('moves');//this data counts moves to keep score
+  // moves=movesData.length; //set var to total amount of moves (size of movesData)
+  solved=$game.data('solved'); //this data counts matches to determine when game is finished
+  // solved=solvedData.length; //set var to be the total amount solved (size of solvedDate)
+  matchBack={opacity:'0.23'};//this variable sets the css rules for matched cards
 
   function isEven(value) {
 	if (value%2 == 0)
@@ -204,9 +205,9 @@ FreeBanana.flipCard = function($card, $game, level, banana)
       if(opencards[(n-2)].data('value')===opencards[(n-1)].data('value')){
         opencards[(n-2)].css(matchBack);
         opencards[(n-1)].css(matchBack);
-        solvedData.push('match');//store match for count
+        solved.push('match');//store match for count
         $game.data('totalFlipped',[]);//empty opencards array after match;
-        $('.solved').text(solved+"/"+level+" solved"); //update score on UI
+        $('.solved').text(solved.length+"/"+level+" solved"); //update score on UI
       } else{
         setTimeout(function(){
           opencards[(n-2)].css(closed).text('').data('flipped',false);
@@ -214,29 +215,28 @@ FreeBanana.flipCard = function($card, $game, level, banana)
           $game.data('totalFlipped',[]);//empty opencards array after flip;
         },890);
       }
-      movesData.push('count');//store move for count
-      $('.moves').text(moves+" moves");//update moves on UI
+      moves.push('count');//store move for count
+      $('.moves').text(moves.length+" moves");//update moves on UI
     }
-
-  if(solved=== level) {
-    $('.score').text(solved + ' solved in ' + moves + ' moves');
+    console.log(solved);
+    // console.log(level);
+    console.log(moves);
+    // console.log(level);
+  if(solved.length=== level) {
+    $('.score').text(solved.length + ' solved in ' + moves.length + ' moves');
     if (level===8){
-      if (!banana && moves <= 16 ){
+      if (!banana && moves.length <= 16 ){
         $('.gif').css('background-image',"url('./ass/img/secret_banana.gif')");//chooses winning image
-        $('.score').empty().text(solved + ' solved in ' + moves + ' moves');
         $('.again').empty().text('2nd banana found, Good Job! The 3rd one is hiding amoungst the minions. Press on the jumping banana to enter Banana level. There you can free the 3rd banana. Hurry before the minions find & eat him.');
-      } else if (banana && moves <= 14 ) {
+      } else if (banana && moves.length <= 14 ) {
         $('.gif').css("background-image","url('./ass/img/top_secret_banana.gif')");//chooses winning image
-        $('.score').empty().text(solved + ' solved in ' + moves + ' moves');
         $('.again').empty().text('wh00t wh00t!!! You saved Humba from the minions. Now YOU get to eat the banana :smirk:! Enjoy :yum:');
       } else {
-        $('.score').empty().text(solved + ' solved in ' + moves + ' moves');
-        $('.again').empty().text('Good Job! Now, improve your score to free the banana');
+        $('.again').empty().text('Good Job! Now, improve your score to free the bananas');
       }
     } else if (level===6){
-
-    } if
-      {
+      $('.again').empty().text('You got this! try the next level to free the bananas');
+    } else {
     }
     $('.win').css('display','flex'); //display win on last match
   }
