@@ -34,7 +34,10 @@ $(document).ready(function() {
     renderOnClick();
   });
   $('.banana').on('click', function(){
-    $('.card').toggleClass("banana_style");
+    $('.card').toggleClass("banana_style_button");
+    $('body, p').toggleClass("banana_style");
+    $(this).toggleClass("banana_button");
+
     banana=!banana;
     console.log(banana);
     if(level){
@@ -106,18 +109,18 @@ MatchGame.renderCards = function(numbers, $game, banana)
 
   for(var c = 0 ; c< numbers.length/2;c++)
   {
-    colors.push(colorValues[c%colorValues.length]);
-    gifs.push(gif_images[c%gif_images.length]);
-  }
-  if(!banana){
-    gifs=[];
+    if(banana){
+      gifs.push(gif_images[c%gif_images.length]);
+    } else {
+      colors.push(colorValues[c%colorValues.length]);
+    }
   }
 
   for ( var n = 0 ; n < numbers.length ; n++ )
   {
     var $newCard;
     if(banana){
-        $newCard=$('<div class="col-xs-3 card banana_style"></div>');
+        $newCard=$('<div class="col-xs-3 card banana_style_button"></div>');
     } else {
       $newCard=$('<div class="col-xs-3 card "></div>');
     }
@@ -169,8 +172,8 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
         'background-size': 'cover',
         'background-position':'center'})
         .data('flipped',true);
-    closed={'background': '#FFD73D',
-      'border': '4px solid #4A3E12',
+    closed={'background': '#FFF6D2',
+      'border': '4px solid #000',
       'background-repeat': 'no-repeat',
       'background-position': 'center',
       'background-size': '23%'};
@@ -180,8 +183,8 @@ MatchGame.flipCard = function($card, $game, numbers, banana)
       closed={background:'#BF5A53'};
     }
     else {
-      closed={'background': '#FFD73D',
-      'border': '4px solid #4A3E12',
+      closed={'background': '#FFF6D2',
+      'border': '4px solid #000',
       'background-repeat': 'no-repeat',
       'background-position': 'center',
       'background-size': '12%'};
