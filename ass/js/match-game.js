@@ -7,14 +7,34 @@ var MatchGame = {};
 
 $(document).ready(function() {
   var $game=$('#game');
-  var render=MatchGame.generateCardValues(6);
-  MatchGame.renderCards(render, $game );
-  console.log(render);
-  $('.reset').on('click', function(){
-    var renderNew=MatchGame.generateCardValues(6);
-    MatchGame.renderCards(renderNew, $game);
+  var level;
+  var renderOnClick= function(){
+    var render=MatchGame.generateCardValues(level);
+    MatchGame.renderCards( render, $game );
+    $('.levels').css('display','none');
+    $('.levels_header h5').css('display','inline-block');
+    $('.reset').css('display','block');
     $('.win').css('display','none');
-    console.log(renderNew);
+    console.log(render);
+    return level;
+  };
+  $('.one').on('click',function(){
+    level=4;
+    renderOnClick();
+  });
+  $('.two').on('click',function(){
+    level=6;
+    renderOnClick();
+  });
+  $('.three').on('click',function(){
+    level=8;
+    renderOnClick();
+  });
+  // MatchGame.renderCards(render, $game );
+  // console.log(render);
+  $('.reset').on('click', function(){
+    renderOnClick();
+
   });
 });
 
