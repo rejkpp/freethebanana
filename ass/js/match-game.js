@@ -102,18 +102,22 @@ MatchGame.renderCards = function(numbers, $game, banana)
     'url("./ass/img/congrats_4.gif")',
     'url("./ass/img/congrats_5.gif")',
     'url("./ass/img/congrats_6.gif")',
-    'url("./ass/img/congrats_7.gif")',
+    'url("./ass/img/congrats_7.gif")',//this is BANANA
     'url("./ass/img/congrats_8.gif")'];
-
-  win = Math.floor(Math.random() * gif_images.length);
-  $('.gif').css('background-image',gif_images[win]);//chooses winning image
 
   for(var c = 0 ; c< numbers.length/2;c++)
   {
     if(!banana){
       colors.push(colorValues[c%colorValues.length]);
+      if(numbers.length===16){
+        $('.gif').css('background-image',gif_images[6]);//set winning image to #7 which is BANANA
+      } else{  win = Math.floor(Math.random() * colors.length);
+        $('.gif').css('background-image',gif_images[win]);//choose winning image based on length of colors array (4 or 6)
+      }
     } else {
       gifs.push(gif_images[c%gif_images.length]);
+      win = Math.floor(Math.random() * gifs.length);
+      $('.gif').css('background-image',gifs[win]);//choose winning image based on length of
     }
   }
 

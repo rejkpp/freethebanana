@@ -116,12 +116,13 @@ p{
   top: 3rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
-  background-color: #BF5A53;
-  border: 2px solid #fff;
+  background-color: #fff;
+  border: 3px solid #BF5A53;
   border-radius: 3rem;
 }
 .banana_button{
   background-color: #FFF6D2;
+  border-color: #fff;
 }
 .banana_style{
   background: #BF5A53;
