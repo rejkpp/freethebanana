@@ -15,7 +15,11 @@ $(document).ready(function() {
     $('.levels').css('display','none');//removes initial levels display
     $('.levels_header h5').css('display','inline-block');//display levels in instructions section
     $('.reset').css('display','block');//display reset button
-    $('.win').css('display','none');//clear congrats/win page
+    $('.next_one, .next_two').css('display','block');//display next button for wins pages
+    $banana.css('display','inline');//display banana button after clear wins pages
+    $('.win').css('display','none');//clear congrats/win pages
+    $('.humba').css('display','none');//clear humba text
+    $('.secret_banana').css('display','none');//clear secret_banana message
     console.log(numbers);//cheat for the console
   };
   $('.one').on('click',function(){
@@ -34,10 +38,10 @@ $(document).ready(function() {
     renderOnClick();
   });
   $banana.on('click', function(){ //toggle banana style on click banana button
-    $('.card').toggleClass("banana_style_button"); //style cards on welcome screen
-    $('body, p, .win').toggleClass("banana_style"); //style body text and win backgroud and color
+    $('.card').toggleClass("banana_style_card"); //style cards on welcome screen
+    $('body, p, .win').toggleClass("banana_style"); //style body text, win backgroud and color
     $(this).toggleClass("banana_button"); //style banana button
-    $('.next').toggleClass("next_banana"); //style banana button
+    $('.next_one, .next_two').toggleClass("next_banana"); //style next level button
     banana=!banana; //change banana boolean state
     if(level){ //only runs if level has been set
       renderOnClick();
@@ -129,7 +133,7 @@ FreeBanana.renderCards = function(numbers, $game, banana)
     if(!banana){
       $newCard=$('<div class="col-xs-3 card "></div>');
     } else {
-      $newCard=$('<div class="col-xs-3 card banana_style_button"></div>');
+      $newCard=$('<div class="col-xs-3 card banana_style_card"></div>');
     }
     $newCard.data('value',numbers[n]);//this data stores the number value
     $newCard.data('flipped',false); //this data sets the state of open or closed card
@@ -222,26 +226,74 @@ FreeBanana.flipCard = function($card, $game, level, banana)
     // console.log(level);
     console.log(moves);
     // console.log(level);
-  if(solved.length=== level) {
-    $('.score').text(solved.length + ' solved in ' + moves.length + ' moves');
-    if (level===8){
-      if (!banana && moves.length <= 16 ){
-        $('.gif').css('background-image',"url('./ass/img/secret_banana.gif')");//chooses winning image
-        $('.again').empty().text('2nd banana found, Good Job! The 3rd one is hiding amoungst the minions. Press on the jumping banana to enter Banana level. There you can free the 3rd banana. Hurry before the minions find & eat him.');
-      } else if (banana && moves.length <= 14 ) {
-        $('.gif').css("background-image","url('./ass/img/top_secret_banana.gif')");//chooses winning image
-        $('.again').empty().text('wh00t wh00t!!! You saved Humba from the minions. Now YOU get to eat the banana :smirk:! Enjoy :yum:');
-      } else {
-        $('.again').empty().text('Good Job! Now, improve your score to free the bananas');
-      }
-    } else if (level===6){
-      $('.again').empty().text('You got this! Try the next level to free the bananas');
-      $('.next').addClass("three"); //style banana button
-    } else {
-      $('.again').empty().text('Way to go! Time for the next level');
-      $('.next').addClass("two"); //style banana button
-    }
-    $('.win').css('display','flex'); //display win on last match
-  }
+  if(solved.length=== level)
+  {
+    var difFactor = 1.75; //var to set difficulty factor for wins to unlock the bananas or next level
+    var congrats = $('.congrats');//set var for congrats class
+    var again = $('.again'); //se var for again class
+    var win =    $('.win').css('display','flex'); // display win
 
+    $('.score').text(solved.length + ' solved in ' + moves.length + ' moves'); //set score on top for all wins
+
+    if (level===8){
+      $('.next_one, .next_two').css('display','none'); //turn off next for level hard
+      if (moves.length <= (difFactor*level) ) { //win in 14 moves (1.75*8) and under
+        if (!banana){ //condition for banana level off
+          congrats.empty().text('wh00t wh00t!!!');
+          $('.gif').css('background-image',"url('./ass/img/secret_banana.gif')");//chooses winning image
+          again.empty();
+          $('.secret_banana').css('display','block');//show secret_banana message
+          $('.reset').css('display','none');
+          level=4;
+          win;
+        }
+        else { //condition for banana level on
+          congrats.empty().text('wh00t wh00t!!!');
+          $('.gif').css("background-image","url('./ass/img/top_secret_banana.gif')");//chooses winning image
+          again.empty();
+          $('.humba').css('display','block');//show humba message
+          $('.banana').css('display','none');
+          win;
+        }
+      }
+      else { //win above 14 moves (1.75*8)
+        congrats.empty().text('Good Job!');
+        again.empty().text('Now, improve your score to free the bananas');
+        $('.banana').css('display','none');
+        win;
+      }
+    }
+    else if (level===6){
+      $('.banana').css('display','none'); //turn off banana button for level medium
+      if (moves.length <= (difFactor*level) ){ //win in 10 moves (1.75) and under
+        congrats.empty().text('You got this!');
+        again.empty().text('Try the next level to free the bananas');
+        $('.next_one').css('display','none'); //remove two and leave three
+        // $('.next_two').css('display','block'); //remove two and leave three
+        win;
+      }
+      else { //win above 10 moves
+        congrats.empty().text('Way to go!');
+        again.empty().text('Now try to improve your score');
+        $('.next_one, .next_two').css('display','none'); //remove next completely
+        win;
+      }
+    }
+    else { //level equal to 4
+      $('.banana').css('display','none'); //turn off banana button for level medium
+      if (moves.length < (difFactor*level) ){ //win under 7 moves (1.75*4)
+        congrats.empty().text('Nice!!!');
+        again.empty().text('Now, try the next level for a bigger challenge');
+        $('.next_two').css('display','none'); //remove two and leave three
+        // $('.next_one').css('display','block'); //remove two and leave three
+        win;
+    }
+      else { //win above 6 moves
+        congrats.empty().text('Good Job!');
+        again.empty().text('Now try to do it in less moves');
+        $('.next_one, .next_two').css('display','none'); //remove next completely
+        win;
+      }
+    }
+  }
 };
