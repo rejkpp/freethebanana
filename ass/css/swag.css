@@ -9,13 +9,14 @@ body{
 h1{
   font-size: 2.5rem;
   font-weight: bold;
+  margin-top: 1.25rem;
 }
 h2{
   font-size: 1rem;
   font-weight: bold;
 }
 h5{
-  margin: 1rem 0.5rem 0.5rem 0.5rem;
+  margin: 1rem 1rem 0.5rem 0;
 }
 h4{
   font-weight: bold;
@@ -24,9 +25,7 @@ p{
   color: #5F5C70;
 }
  /*color scheme BF5A53, FFF6D2, 6BC27D, 5F5C70, 474554*/
-.score,
-.stats,
-.again{
+.stats{
   display: flex;
   justify-content: center;
   font-weight: bold;
@@ -58,6 +57,7 @@ p{
   display: none;
   font-size: 2rem;
   padding: 1rem;
+  width:90%;
   text-align: center;
   background: #6BC27D;
   border: 4px solid #fff;
@@ -75,8 +75,10 @@ p{
   height: 100%;
   margin: auto;
   text-align: center;
+  align-items: center;
   background: #FFF6D2;
-  font-size: 3rem;
+  font-size: 2rem;
+  font-weight: bold;
 }
 .gif{
   background-repeat: no-repeat;
@@ -98,9 +100,11 @@ p{
 .three{
   cursor: pointer;
 }
-.next{
+.next_one,
+.next_two{
   font-size: 2rem;
   padding: 1rem;
+  width: 90%;
   text-align: center;
   background: #BF5A53;
   border: 4px solid #fff;
@@ -116,26 +120,22 @@ p{
 }
 }
 .levels_header{
-  text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+  /*text-align: center;*/
 }
 .levels_header h5{
-  font-size: 2rem;
   display: none;
-  padding-top: 1rem;
-  text-decoration: underline;
+  margin-right: 0;
 }
 .banana{
   display: inline;
   height: 2.5rem;
   width: 2.5rem;
-  position: absolute;
-  right: 3rem;
-  top: 3rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
   background-color: #fff;
   border: 3px solid #BF5A53;
   border-radius: 3rem;
+  cursor: pointer;
 }
 .banana_button{
   background-color: #FFF6D2;
@@ -145,7 +145,7 @@ p{
   background: #BF5A53;
   color: #fff;
 }
-.banana_style_button{
+.banana_style_card{
   background: #FFF6D2;
   border: 4px solid #474554;
 }
@@ -154,6 +154,10 @@ p{
 	animation-duration: .69s;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
+}
+.congrats{
+  font-size: 3rem;
+  margin-top: 0.5rem;
 }
 @keyframes rotate {
 	from {transform: scale( 1.5 );}
@@ -183,7 +187,9 @@ p{
   h4.again{
     width: 40rem;
     margin: 1rem;
+    line-height: 1.2;
   }
+  /*this rule is for the buttons*/
   .win h3{
     width: 31.25rem;
   }
