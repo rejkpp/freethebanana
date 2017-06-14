@@ -40,7 +40,7 @@ $(document).ready(function() {
   $banana.on('click', function(){ //toggle banana style on click banana button
     $('.card').toggleClass("banana_style_card"); //style cards on welcome screen
     $('body, p, .win').toggleClass("banana_style"); //style body text, win backgroud and color
-    $(this).toggleClass("banana_button"); //style banana button
+    $('.banana').toggleClass("banana_button"); //style banana button
     $('.next_one, .next_two').toggleClass("next_banana"); //style next level button
     banana=!banana; //change banana boolean state
     if(level){ //only runs if level has been set
@@ -244,7 +244,6 @@ FreeBanana.flipCard = function($card, $game, level, banana)
           again.empty();
           $('.secret_banana').css('display','block');//show secret_banana message
           $('.reset').css('display','none');
-          level=4;
           win;
         }
         else { //condition for banana level on
