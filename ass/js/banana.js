@@ -217,7 +217,7 @@ FreeBanana.flipCard = function($card, $game, level, banana)
           opencards[(n-2)].css(closed).text('').data('flipped',false);
           opencards[(n-1)].css(closed).text('').data('flipped',false);
           $game.data('totalFlipped',[]);//empty opencards array after flip;
-        },890);
+        },1000);
       }
       moves.push('count');//store move for count
       $('.moves').text(moves.length+" moves");//update moves on UI
